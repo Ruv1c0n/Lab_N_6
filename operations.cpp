@@ -191,10 +191,10 @@ void matrix_add(double** matr_1, int size_n_1, int size_m_1, double** matr_2, in
 
 	int temp = (operation) ? 1 : -1;
 	for (int i = 0; i < size_n_1; i++)
-		for (int j = 0; j < size_m_2; j++)
+		for (int j = 0; j < size_m_1; j++)
 			res_matr[i][j] = matr_1[i][j] + temp * matr_2[i][j];
 
-	copy_matr(matr_1, res_matr, size_n_1, size_m_2);
+	copy_matr(matr_1, res_matr, size_n_1, size_m_1);
 	free_matr(res_matr, size_n_1, size_m_2);
 }
 
