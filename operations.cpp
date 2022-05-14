@@ -1,11 +1,12 @@
-п»ї#include<iostream>
+#include<iostream>
 #include<cstdio>
 #include"operations.h"
 using namespace std;
 const double EPS = 0.0000000001;
 
-//РџСЂРѕРІРµСЂРєР° СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё РјР°С‚СЂРёС†С‹ 
+//Проверка размерности матрицы 
 void input_check_size(int& size_n, int& size_m) {
+	cin >> size_n >> size_m;
 	while (cin.fail() || size_n > 1000 || size_n <= 1 || size_m > 1000 || size_m <= 1) {
 		cin.clear();
 		cin.ignore(32767, '\n');
@@ -14,7 +15,7 @@ void input_check_size(int& size_n, int& size_m) {
 	}
 }
 
-//РџСЂРѕРІРµСЂРєР° СЌР»РµРјРµРЅС‚Р° РјР°С‚СЂРёС†С‹
+//Проверка элемента матрицы
 void input_check_elem(double& x, int i, int j) {
 	while (cin.fail()) {
 		cin.clear();
@@ -24,7 +25,7 @@ void input_check_elem(double& x, int i, int j) {
 	}
 }
 
-//Р¤СѓРЅРєС†РёСЏ, РєРѕС‚РѕСЂР°СЏ РІРІРѕРґРёС‚ СЌР»РµРјРµРЅС‚С‹ РјР°С‚СЂРёС†С‹
+//Функция, которая вводит элементы матрицы
 double** input_matrix(int size_n, int size_m) {
 	double elem;
 	double** matrix = create_matr(size_n, size_m);
@@ -34,20 +35,20 @@ double** input_matrix(int size_n, int size_m) {
 			cin >> elem;
 			input_check_elem(elem, i, j);
 			matrix[i][j] = elem;
-		/*	if (size_n == 1 && size_m == 1)
-				break;*/
+			/*	if (size_n == 1 && size_m == 1)
+					break;*/
 		}
 	return matrix;
 }
 
-//Р¤СѓРЅРєС†РёСЏ Р·Р°РЅСѓР»СЏРµС‚ РјР°С‚СЂРёС†Сѓ
-void zero_matrix(double** matrix, int size_n, int size_m){
+//Функция зануляет матрицу
+void zero_matrix(double** matrix, int size_n, int size_m) {
 	for (int i = 0; i < size_n; i++)
-			for (int j = 0; j < size_n; j++)
-				matrix[i][j] = 0;
+		for (int j = 0; j < size_n; j++)
+			matrix[i][j] = 0;
 }
 
-//РЎРѕР·РґР°РЅРёРµ РјР°С‚СЂРёС†С‹ СЃРѕСЃС‚РѕСЏС‰РµР№ РёР· 0
+//Создание матрицы состоящей из 0
 double** create_matr(int size_n, int size_m) {
 	double** res_matr = new double* [size_n];
 	for (int i = 0; i < size_n; i++)
@@ -57,14 +58,14 @@ double** create_matr(int size_n, int size_m) {
 }
 
 
-//РљРѕРїРёСЂРѕРІР°РЅРёРµ РјР°С‚СЂРёС†С‹
+//Копирование матрицы
 void copy_matr(double** src, double** dst, int size_n, int size_m) {
 	for (int i = 0; i < size_n; i++)
 		for (int j = 0; j < size_m; j++)
 			src[i][j] = dst[i][j];
 }
 
-//РћС‡РёСЃС‚РєР° РјР°С‚СЂРёС†
+//Очистка матриц
 void free_matr(double** matrix, int size_n, int size_m) {
 	for (int i = 0; i < size_n; i++) {
 		for (int j = 0; j < 0; j++)
@@ -75,7 +76,7 @@ void free_matr(double** matrix, int size_n, int size_m) {
 	matrix = 0;
 }
 
-//Р¤СѓРЅРєС†РёСЏ СЃРѕР·РґР°РµС‚ РµРґРёРЅРёС‡РЅСѓСЋ РјР°С‚СЂРёС†Сѓ
+//Функция создает единичную матрицу
 double** unit_matrix(int size_n) {
 	double** u_matrix = create_matr(size_n, size_n);
 	for (int i = 0; i < size_n; i++)
@@ -87,7 +88,7 @@ double** unit_matrix(int size_n) {
 	return u_matrix;
 }
 
-// Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕРґРјР°С‚СЂРёС†Сѓ РєРІР°РґСЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹ Р±РµР· i-РіРѕ СЃС‚РѕР»Р±С†Р° Рё j-РѕР№ СЃС‚СЂРѕРєРё
+// Функция возвращает подматрицу квадратной матрицы без i-го столбца и j-ой строки
 double** matrix_minor(double** matrix, int size_n, int str_num, int column_num) {
 	double** minor = create_matr(size_n, size_n);
 	int minor_string = 0, minor_column = 0;
@@ -107,7 +108,7 @@ double** matrix_minor(double** matrix, int size_n, int str_num, int column_num) 
 	return minor;
 }
 
-//Р’С‹С‡РёСЃР»РµРЅРёРµ РѕРїСЂРµРґРµР»РёС‚РµР»СЏ
+//Вычисление определителя
 double determinant(double** matrix, int size_n) {
 	double answer = 0.0;
 	if (size_n == 1)
@@ -116,7 +117,7 @@ double determinant(double** matrix, int size_n) {
 		answer = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 		return answer;
 	}
-	// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЂР°Р·Р»РѕР¶РµРЅРёРµ РїРѕ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ РјР°С‚СЂРёС†С‹.
+	// Используется разложение по первой строке матрицы.
 	for (int i = 0; i < size_n; i++) {
 		double** minor = matrix_minor(matrix, size_n, 0, i);
 		answer += ((i % 2 == 1) ? -1 : 1) * matrix[0][i] * determinant(minor, size_n - 1);
@@ -125,18 +126,20 @@ double determinant(double** matrix, int size_n) {
 	return answer;
 }
 
-//Р—Р°РїРёСЃСЊ С‚СЂР°РЅСЃРїРѕРЅРёСЂРѕРІР°РЅРЅРѕР№ РјР°С‚СЂРёС†С‹ РІ trans_matrix
-void transpose(double** matrix, int size_n, int size_m, double** trans_matrix) {
+//Запись транспонированной матрицы в trans_matrix
+double** transpose(double** matrix, int size_n, int size_m) {
+	double** trans_matrix = create_matr(size_n, size_m);
 	for (int i = 0; i < size_m; i++)
 		for (int j = 0; j < size_n; j++)
 			trans_matrix[j][i] = matrix[i][j];
+	return trans_matrix;
 }
 
-//РќР°С…РѕР¶РґРµРЅРёРµ РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹, РµСЃР»Рё СЌС‚Рѕ РІРѕР·РјРѕР¶РЅРѕ
+//Нахождение обратной матрицы, если это возможно
 bool inverse_matrix(double** matrix, int size_n) {
 	double det = determinant(matrix, size_n);
 	int temp;
-	//Р•СЃР»Рё РѕРїСЂРµРґРµР»РёС‚РµР»СЊ СЂР°РІРµРЅ 0, С‚Рѕ РЅР°Р№С‚Рё РѕР±СЂР°С‚РЅСѓСЋ РјР°С‚СЂРёС†Сѓ РЅРµ РІРѕР·РјРѕР¶РЅРѕ
+	//Если определитель равен 0, то найти обратную матрицу не возможно
 	if (det == 0)
 		return false;
 	double** minors_matrix = create_matr(size_n, size_n);
@@ -155,7 +158,7 @@ bool inverse_matrix(double** matrix, int size_n) {
 	return true;
 }
 
-//Р¤СѓРЅРєС†РёСЏ СѓРјРЅРѕР¶Р°РµС‚ РґРІРµ РјР°С‚СЂРёС†С‹ Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РѕС‚РІРµС‚ РІ matr_1
+//Функция умножает две матрицы и записывает ответ в matr_1
 void matrix_multip(double** matr_1, double** matr_2, int size_n) {
 	double** res_matr = create_matr(size_n, size_n);
 
@@ -171,7 +174,7 @@ void matrix_multip(double** matr_1, double** matr_2, int size_n) {
 	free_matr(res_matr, size_n, size_n);
 }
 
-//РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†С‹ РЅР° РєРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
+//Умножение матрицы на константное значение
 void matrix_const_multip(int constant, double** matrix, int size_n) {
 	double** res_matr = create_matr(size_n, size_n);
 
@@ -185,7 +188,7 @@ void matrix_const_multip(int constant, double** matrix, int size_n) {
 	free_matr(res_matr, size_n, size_n);
 }
 
-//Р¤СѓРЅРєС†РёСЏ СЃРєР»Р°РґС‹РІР°РµС‚ РјР°С‚СЂРёС†С‹  Рё Р·Р°РїРёСЃС‹РІР°РµС‚ РѕС‚РІРµС‚ РІ matr_1 
+//Функция складывает матрицы  и записывает ответ в matr_1 
 void matrix_add(double** matr_1, int size_n_1, int size_m_1, double** matr_2, int size_n_2, int size_m_2, bool operation) {
 	double** res_matr = create_matr(size_n_1, size_m_2);
 
@@ -198,11 +201,25 @@ void matrix_add(double** matr_1, int size_n_1, int size_m_1, double** matr_2, in
 	free_matr(res_matr, size_n_1, size_m_2);
 }
 
-//Р’С‹РІРѕРґ РјР°С‚СЂРёС†С‹
+//Вывод матрицы
 void output_matr(double** matr, int size_n, int size_m) {
 	for (int i = 0; i < size_n; i++) {
 		for (int j = 0; j < size_m; j++)
 			cout << matr[i][j] << '\t';
 		cout << '\n';
 	}
+}
+
+//Прибавление к  матрице константное значение
+void matrix_const_add(int constant, double** matrix, int size_n, int size_m) {
+	double** res_matr = create_matr(size_n, size_m);
+
+	for (int i = 0; i < size_n; i++) {
+		for (int j = 0; j < size_m; j++) {
+			res_matr[i][j] = matrix[i][j] + constant;
+		}
+	}
+
+	copy_matr(matrix, res_matr, size_n, size_m);
+	free_matr(res_matr, size_n, size_m);
 }
